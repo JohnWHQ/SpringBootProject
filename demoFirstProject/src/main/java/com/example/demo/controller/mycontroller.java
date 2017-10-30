@@ -20,7 +20,7 @@ public class mycontroller {
 
     @RequestMapping(value = "/test", method = RequestMethod.GET)
     public String function(@RequestParam ("id") String id){
-        return "hello word" + id + " aaa";
+        return "hello word" + id + " index";
     }
 
     /**
