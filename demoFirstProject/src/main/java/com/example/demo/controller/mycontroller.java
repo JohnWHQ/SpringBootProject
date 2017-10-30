@@ -3,6 +3,9 @@ package com.example.demo.controller;
 
 import com.example.demo.dao.CurdResposity;
 import com.example.demo.domain.Person;
+import com.example.demo.domain.Result;
+import com.example.demo.service.PersonService;
+import com.example.demo.utils.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,8 +13,14 @@ import java.util.List;
 
 @RestController
 public class mycontroller {
+
     @Autowired
     CurdResposity curdResposity;
+
+    @Autowired
+    PersonService personService;
+
+
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String indexPage(){
@@ -108,6 +117,27 @@ public class mycontroller {
     @RequestMapping(value = "/selectByName/{Name}", method = RequestMethod.GET)
     public List<Person> selectByName(@PathVariable("Name") String name){
         return curdResposity.findByName(name);
+    }
+
+
+    @RequestMapping(value = "/update2", method = RequestMethod.POST)
+    public Result<Person> updateAddPerson2(Person person){
+
+        if (person.getName() == null || person.getName() == "") {
+            return ResultUtil.fail(0, "name empty");
+        }
+
+        Person p = new Person();
+        p.setName(person.getName());
+        p.setAddress(person.getAddress());
+
+        return ResultUtil.success(curdResposity.save(p));
+
+    }
+
+    @RequestMapping(value = "/test1/{id}", method = RequestMethod.GET)
+    public void getId(@PathVariable("id") Integer id) throws Exception{
+        personService.getAddress(id);
     }
 
 }
