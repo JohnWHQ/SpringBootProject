@@ -5,6 +5,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface CurdResposity extends JpaRepository<Person, Integer>{
+public interface ModelCurdResposity extends JpaRepository<Person, Integer>{
+    // 根据name字段查
     public List<Person> findByName(String name);
+    // 根据address字段查
+    public List<Person> findByAddress(String address);
 }

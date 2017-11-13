@@ -1,6 +1,6 @@
 package com.example.demo.service;
 
-import com.example.demo.dao.CurdResposity;
+import com.example.demo.dao.ModelCurdResposity;
 import com.example.demo.domain.Person;
 import com.example.demo.enums.ResultEnum;
 import com.example.demo.exception.PersonException;
@@ -9,8 +9,9 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class PersonService {
+
     @Autowired
-    CurdResposity curdResposity;
+    ModelCurdResposity curdResposity;
 
     public void getAddress(Integer id) throws Exception{
         Person per = curdResposity.findOne(id);
@@ -22,7 +23,4 @@ public class PersonService {
         }
     }
 
-    public Person findById(Integer id){
-        return curdResposity.findOne(id);
-    }
 }

@@ -1,7 +1,7 @@
 package com.example.demo.controller;
 
 
-import com.example.demo.dao.CurdResposity;
+import com.example.demo.dao.ModelCurdResposity;
 import com.example.demo.domain.Person;
 import com.example.demo.domain.Result;
 import com.example.demo.service.PersonService;
@@ -12,43 +12,63 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-public class mycontroller {
+public class ModelController {
 
     @Autowired
-    CurdResposity curdResposity;
+    ModelCurdResposity curdResposity;
 
     @Autowired
     PersonService personService;
 
 
-
+    /**
+     * 首页根目录匹配 /
+     * @return
+     */
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String indexPage(){
         return "hello word";
     }
 
+    /**
+     * 匹配测试函数
+     * @return
+     */
+    @RequestMapping(value = "/page", method = RequestMethod.GET)
+    public String indexPage1(){
+        return "test";
+    }
+
+    /**
+     * 匹配带参测试函数
+     * @param id
+     * @return
+     */
     @RequestMapping(value = "/test", method = RequestMethod.GET)
     public String function(@RequestParam ("id") String id){
         return "hello word" + id + " index";
     }
 
+
+
     /**
-     * select
-     * @return
+     * jpa select 操作查询表中所有数据
+     * @return List
      */
     @RequestMapping(value = "/select", method = RequestMethod.GET)
     public List<Person> selectAllPerson(){
         return curdResposity.findAll();
     }
 
+
     /**
-     * insert into one persion info
+     * jpa insert 操作插入表中一条记录(通过参数插)
      * @param name
      * @param address
      * @return person info
      */
     @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public Person updateAddPerson(@RequestParam("Name") String name,
+    public Person insertAddPerson(@RequestParam("Name") String name,
                                   @RequestParam("Address") String address){
         Person p = new Person();
         p.setName(name);
@@ -57,12 +77,12 @@ public class mycontroller {
 
     }
     /**
-     * insert into one persion info by class
+     *  jpa insert 操作插入表中一条记录(通过实体插)
      * @param person
      * @return person info
      */
     @RequestMapping(value = "/update1", method = RequestMethod.POST)
-    public Person updateAddPerson1(Person person){
+    public Person insertAddPerson1(Person person){
         Person p = new Person();
         p.setName(person.getName());
         p.setAddress(person.getAddress());
@@ -71,7 +91,7 @@ public class mycontroller {
     }
 
     /**
-     * search person info by id
+     * 通过id查一条记录
      * @param id
      * @return person info by id search
      */
@@ -80,8 +100,9 @@ public class mycontroller {
         return curdResposity.findOne(id);
     }
 
+
     /**
-     * modify by id
+     * jpa update 操作通过id更新
      * @param id
      * @param name
      * @param address
@@ -101,7 +122,7 @@ public class mycontroller {
     }
 
     /**
-     * delete by id
+     * jpa delete 操作通过id删
      * @param id
      */
     @RequestMapping(value = "/delete/{Id}", method = RequestMethod.DELETE)
@@ -109,8 +130,10 @@ public class mycontroller {
         curdResposity.delete(id);
     }
 
+
+
     /**
-     * select by name
+     * jpa select 操作通过重写jpa接口实现by任何字段查值
      * @param name
      * @return
      */
@@ -120,6 +143,11 @@ public class mycontroller {
     }
 
 
+    /**
+     * 统一返回模板
+     * @param person
+     * @return
+     */
     @RequestMapping(value = "/update2", method = RequestMethod.POST)
     public Result<Person> updateAddPerson2(Person person){
 
@@ -135,6 +163,11 @@ public class mycontroller {
 
     }
 
+    /**
+     * service 层调用模板
+     * @param id
+     * @throws Exception
+     */
     @RequestMapping(value = "/test1/{id}", method = RequestMethod.GET)
     public void getId(@PathVariable("id") Integer id) throws Exception{
         personService.getAddress(id);
